@@ -1,4 +1,4 @@
-# Getting Started with React (CRA)
+# Getting Started with React - Workshop 22-23 TWIN(CRA)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
