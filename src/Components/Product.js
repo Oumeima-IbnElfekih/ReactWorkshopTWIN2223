@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 function Product(props) {
   
@@ -23,7 +24,10 @@ function Product(props) {
         />
         </Card.Header>
         <Card.Body>
-          <Card.Title>{product.name}</Card.Title>
+          <Card.Title>
+          <Link to={`${product.name}`}>{product.name}</Link>
+          
+          </Card.Title>
           <Card.Text>Price : {product.price} DT</Card.Text>
           <Card.Text>Quantity :{product.quantity}</Card.Text>
           <Card.Text>Likes :{product.like}</Card.Text>
