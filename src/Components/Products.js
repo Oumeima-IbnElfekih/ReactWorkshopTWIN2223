@@ -1,12 +1,28 @@
 import { useEffect, useState } from "react";
 import { Alert, Col, Container, Row } from "react-bootstrap";
-import products from "../products.json";
+import { deleteProduct, getallProducts } from "../service/api";
 import Product from "./Product";
 
 function Products(props) {
+  const [products,setProducts] =useState([])
   const [showAlert, setShowAlert] = useState(false);
   const [showMessage, setShowMessage] = useState(true);
-
+  const getList = async()=>{
+    const res=  await getallProducts()
+    if (res.status ===200)
+    setProducts(res.data)
+   
+   }
+   const deleteProd = async (id) => {
+    const result = window.confirm("Are you sure you want to delete?");
+  if (result) {
+    await deleteProduct(id);
+    getList(); }
+}
+  useEffect(()=>{
+    
+     getList();
+  },[])
   const buy = (p) => {
     if (p.quantity > 0) {
       p.quantity--;
@@ -17,6 +33,7 @@ function Products(props) {
     }
   };
   useEffect(() => {
+
     console.log("composant a été monté " + showMessage);
     setTimeout(() => {
       setShowMessage(false);
@@ -48,11 +65,11 @@ function Products(props) {
         </Alert>
       )}
       <Row>
-        {products.map((product, index) => (
+        {products.length !==0 ? products.map((product, index) => (
           <Col md={4} key={index}>
-            <Product product={product} buyFun={buy} />
+            <Product product={product} buyFun={buy} deleteProd={deleteProd}/>
           </Col>
-        ))}
+        )) : <p>Product does not exist</p>}
       </Row>
     </Container>
   );

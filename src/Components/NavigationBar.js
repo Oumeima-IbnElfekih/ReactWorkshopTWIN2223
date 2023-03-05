@@ -13,8 +13,12 @@ export default function NavigationBar(){
         <Nav className="me-auto">
          {/* <NavLink to="/products" style={({isActive})=> ({ textDecoration : isActive ? 'underline' : 'none' })}>Products</NavLink>
          <NavLink to="aaaaa" style={({isActive})=> ({ textDecoration : isActive ? 'underline' : 'none' })} >Add Product</NavLink> */}
-          <Nav.Link as={NavLink}  to="/products" style={({isActive})=> ({ textDecoration : isActive ? 'underline' : 'none' })}>Home</Nav.Link>
-          <Nav.Link as={NavLink}  to="/aaaaa"  style={({isActive})=> ({ textDecoration : isActive ? 'underline' : 'none' })} >Link</Nav.Link> 
+          <Nav.Link as={NavLink}  to="/products/list"
+           style={({isActive})=> ({ textDecoration : isActive ? 'underline' : 'none' })}>
+            Home</Nav.Link>
+          <Nav.Link as={NavLink}  to="/products/add" 
+           style={({isActive})=> ({ textDecoration : isActive ? 'underline' : 'none' })} >
+            Add Product</Nav.Link> 
         </Nav>
       </Navbar.Collapse>
     </Container>

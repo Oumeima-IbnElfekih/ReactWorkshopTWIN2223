@@ -1,13 +1,19 @@
+import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import products from '../products.json'
+import { getallProducts } from "../service/api"
+
 export default function Productdetails(){
     const param = useParams()
-    const p = products.find(pro=> pro.name ===param.name)
-    console.log(p);
+    const [p,setP] =useState({})
+    const getProduct=async ()=>{
+        const res = await getallProducts(param.id)
+        if( res.status ===200)
+        setP(res.data)
+    }
+     useEffect(()=>{
+        getProduct()
+     },[]) 
     return <>
-    {p ? <p>{p.name}</p> : <p>There is no product</p>}
-    
-     
-     
+    {p.id !==undefined ? <p>{p.name}</p> : <p>There is no product</p>}
      </>
 }
