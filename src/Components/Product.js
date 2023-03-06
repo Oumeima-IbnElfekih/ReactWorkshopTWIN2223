@@ -41,7 +41,7 @@ function Product(props) {
             <Row>
             <Col md={6}>
               {" "}
-              <Button variant="success" ><Link to={`/products/update/${product.id}`} style={{textDecoration :'none' ,color: 'white'}}>Update Product </Link></Button>
+              <Button variant="success" ><Link to={`/products/update/${product.id}`}>Update Product </Link></Button>
             </Col>
             <Col md={6}>
               <Button variant="danger" onClick={() => props.deleteProd(product.id)}>Delete Product</Button>
