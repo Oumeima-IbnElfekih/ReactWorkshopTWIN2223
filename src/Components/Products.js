@@ -1,28 +1,29 @@
 import { useEffect, useState } from "react";
 import { Alert, Col, Container, Row } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteProductReducer, selectProducts, setErrors } from "../redux/slices/productsSlice";
 import { deleteProduct, getallProducts } from "../service/api";
 import Product from "./Product";
 
 function Products(props) {
-  const [products,setProducts] =useState([])
+  const [products] = useSelector(selectProducts);
   const [showAlert, setShowAlert] = useState(false);
   const [showMessage, setShowMessage] = useState(true);
-  const getList = async()=>{
-    const res=  await getallProducts()
-    if (res.status ===200)
-    setProducts(res.data)
-   
-   }
-   const deleteProd = async (id) => {
+  const dispatch= useDispatch();
+  const deleteProd = async (id) => {
     const result = window.confirm("Are you sure you want to delete?");
-  if (result) {
-    await deleteProduct(id);
-    getList(); }
-}
-  useEffect(()=>{
-    
-     getList();
-  },[])
+    if (result) {
+      deleteProduct(id)
+      .then(()=>{
+        dispatch(deleteProductReducer(id));
+        dispatch(setErrors(null))
+      })
+      .catch((error)=>{
+        dispatch(setErrors(error))
+      })
+    }
+  };
+ 
   const buy = (p) => {
     if (p.quantity > 0) {
       p.quantity--;
@@ -66,7 +67,7 @@ function Products(props) {
       )}
       <Row>
         {products.length !==0 ? products.map((product, index) => (
-          <Col md={4} key={index}>
+          <Col md={4}  key={product.id}>
             <Product product={product} buyFun={buy} deleteProd={deleteProd}/>
           </Col>
         )) : <p>Product does not exist</p>}

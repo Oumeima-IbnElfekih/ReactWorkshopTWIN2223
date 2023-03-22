@@ -1,15 +1,19 @@
 import { useState } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
+import { increment } from "../redux/slices/cartSlice";
 function Product(props) {
-  
+  const dispatch = useDispatch();
   const [product, setProduct] = useState(props.product)
-  const addLikes =(e) => {
-        setProduct({...product, like : product.like +=1 })
-
-  }
- 
+  
+  const addLikes = (e) => {
+    e.preventDefault();
+    setProduct({ ...product, like: product.like + 1 });
+  };
+  const addToCart = (p) => {
+    dispatch(increment(p));
+  };
 
     return (
      
@@ -31,6 +35,7 @@ function Product(props) {
           <Card.Text>Price : {product.price} DT</Card.Text>
           <Card.Text>Quantity :{product.quantity}</Card.Text>
           <Card.Text>Likes :{product.like}</Card.Text>
+          
           <Row>
             <Col>
               <Button variant="primary" onClick={addLikes}>Like</Button>
@@ -38,7 +43,12 @@ function Product(props) {
             <Col>
               <Button variant="dark" onClick = {()=> props.buyFun(product)} disabled={product.quantity===0}>Buy</Button>
             </Col>
-            <Row>
+           
+           
+
+          </Row>
+          <br></br>
+          <Row>
             <Col md={6}>
               {" "}
               <Button variant="success" ><Link to={`/products/update/${product.id}`}>Update Product </Link></Button>
@@ -48,7 +58,14 @@ function Product(props) {
             </Col>
             
           </Row>
-          </Row>
+          <br></br>
+        <Row>
+          <Col md={12}>
+            <Button variant="success" onClick={() => addToCart(product)}>
+              ADD TO CART +
+            </Button>
+          </Col>
+        </Row>
         </Card.Body>
       </Card>
     );

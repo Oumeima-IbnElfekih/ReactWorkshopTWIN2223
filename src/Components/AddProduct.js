@@ -1,10 +1,14 @@
 import { useState } from "react";
-import { Button, Container, Form } from "react-bootstrap";
+import { Alert, Button, Container, Form } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { addProductReducer, setErrors } from "../redux/slices/productsSlice";
 import { addProduct } from "../service/api";
 
 export default  function AddProduit () {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const errors = useSelector(state=>state.products.errors);
     const [product, setProduct] =useState(
 
         {
@@ -31,14 +35,22 @@ export default  function AddProduit () {
         })  
      }
     const addP= async()=>{
-            const res = await addProduct(product)
-            if (res.status===201) 
-            navigate('/products/list')
+      addProduct(product)
+      .then((response)=>{
+        dispatch(setErrors(null))
+        dispatch(addProductReducer(response.data));
+        navigate("/products/list");
+      }).catch((error)=>{
+        dispatch(setErrors(error))
+      })
 
     }
-
+   
     return (<>
      <Container style={{ marginTop: "30px" }}>
+     {errors !== null && <Alert key="danger" variant="danger">
+          {errors.message}
+      </Alert>} 
         <Form >
       <Form.Group className="mb-3" >
         <Form.Label>Name</Form.Label>

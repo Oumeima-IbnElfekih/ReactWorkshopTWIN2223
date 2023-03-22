@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
-import { Button, Container, Form } from "react-bootstrap";
+import { Alert, Button, Container, Form } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import { setErrors, updateProductReducer } from "../redux/slices/productsSlice";
 import { editProduct, getallProducts } from "../service/api";
 
 export default function UpdateProduct() {
   const navigate = useNavigate();
   const param = useParams();
+  const dispatch = useDispatch();
+  const errors = useSelector(state=>state.products.errors);
+
   const [product, setProduct] = useState({
     id: param.id ,
     name: "",
@@ -32,17 +37,24 @@ export default function UpdateProduct() {
     console.log(e.target.files);
     setProduct({ ...product, [e.target.name]: e.target.files[0].name });
   };
-  const UpdateP= async () => {
-    const res = await editProduct(param.id,product);
-    console.log(res)
-    if(res.status ===200)
-    navigate("/products/list");
-    
+  const UpdateP = async () => {
+    editProduct(param.id, product)
+    .then((response)=>{
+      dispatch(setErrors(null))
+      dispatch(updateProductReducer(response.data));
+      navigate("/products/list");
+    }).catch((error)=>{
+      dispatch(setErrors(error))
+    })
   };
+  
   return (
     <>
       <Container style={{ marginTop: "30px" }}>
         <h2>Modify Your {name} Product</h2>
+        {errors !== null && <Alert key="danger" variant="danger">
+          {errors.message}
+      </Alert>} 
         <Form>
           <Form.Group className="mb-3">
             <Form.Label>Name</Form.Label>
