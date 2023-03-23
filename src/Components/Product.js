@@ -40,9 +40,7 @@ function Product(props) {
             <Col>
               <Button variant="primary" onClick={addLikes}>Like</Button>
             </Col>
-            <Col>
-              <Button variant="dark" onClick = {()=> props.buyFun(product)} disabled={product.quantity===0}>Buy</Button>
-            </Col>
+            
            
            
 

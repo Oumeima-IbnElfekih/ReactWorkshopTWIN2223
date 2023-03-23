@@ -24,15 +24,15 @@ function Products(props) {
     }
   };
  
-  const buy = (p) => {
-    if (p.quantity > 0) {
-      p.quantity--;
-      setShowAlert(true);
-      setTimeout(() => {
-        setShowAlert(false);
-      }, 2000);
-    }
-  };
+  // const buy = (p) => {
+  //   if (p.quantity > 0) {
+  //     p.quantity--;
+  //     setShowAlert(true);
+  //     setTimeout(() => {
+  //       setShowAlert(false);
+  //     }, 2000);
+  //   }
+  // };
   useEffect(() => {
 
     console.log("composant a été monté " + showMessage);
